@@ -2,7 +2,7 @@ version: '2'
 services:
   smg_db:
     container_name: smg_db
-    image: mariadb:10.7
+    image: mariadb:10.8
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped
@@ -18,7 +18,7 @@ services:
     container_name: smg_wordpress
     depends_on:
       - smg_db
-    image: wordpress:latest
+    image: wordpress:php8.1-fpm
     volumes:
       - ./data:/var/www/html/wp-content
     restart: unless-stopped
