@@ -1,0 +1,47 @@
+version: '2'
+services:
+  smg_db:
+    container_name: smg_db
+    image: mariadb:10.7
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    
+  smg_wordpress:
+    container_name: smg_wordpress
+    depends_on:
+      - smg_db
+    image: wordpress:latest
+    volumes:
+      - ./data:/var/www/html/wp-content
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      WORDPRESS_DB_HOST: smg_db
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_TABLE_PREFIX: ${DB_PREFIX}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.smg.entrypoints=http
+      - traefik.http.routers.smg.rule=Host("smajoie.ch", "www.smajoie.ch")
+      - traefik.http.middlewares.smg-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.smg.middlewares=smg-https-redirect
+      - traefik.http.routers.smg-secure.entrypoints=https
+      - traefik.http.routers.smg-secure.rule=Host("smajoie.ch", "www.smajoie.ch")
+      - traefik.http.routers.smg-secure.tls=true
+      - traefik.http.routers.smg-secure.tls.certresolver=http
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true
