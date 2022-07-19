@@ -18,7 +18,7 @@ services:
     container_name: smg_wordpress
     depends_on:
       - smg_db
-    image: wordpress:latest
+    image: wordpress:php8.1
     volumes:
       - ./data:/var/www/html/wp-content
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
