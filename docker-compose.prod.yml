@@ -33,11 +33,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.smg.entrypoints=http
-      - traefik.http.routers.smg.rule=Host("smajoie.ch", "www.smajoie.ch")
+      - traefik.http.routers.smg.rule=Host("test.smajoie.ch")
       - traefik.http.middlewares.smg-https-redirect.redirectscheme.scheme=https
       - traefik.http.routers.smg.middlewares=smg-https-redirect
       - traefik.http.routers.smg-secure.entrypoints=https
-      - traefik.http.routers.smg-secure.rule=Host("smajoie.ch", "www.smajoie.ch")
+      - traefik.http.routers.smg-secure.rule=Host("test.smajoie.ch")
       - traefik.http.routers.smg-secure.tls=true
       - traefik.http.routers.smg-secure.tls.certresolver=http
       - traefik.docker.network=proxy
