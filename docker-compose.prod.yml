@@ -18,7 +18,7 @@ services:
     container_name: smg_wordpress
     depends_on:
       - smg_db
-    image: wordpress:php8.1-fpm
+    image: wordpress:latest
     volumes:
       - ./data:/var/www/html/wp-content
     restart: unless-stopped
