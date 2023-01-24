@@ -2,7 +2,7 @@ version: '2'
 services:
   smg_db:
     container_name: smg_db
-    image: mariadb:10.8
+    image: mariadb:10.10
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped
@@ -13,6 +13,7 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      MARIADB_AUTO_UPGRADE: 1
     
   smg_wordpress:
     container_name: smg_wordpress
