@@ -19,6 +19,7 @@ services:
     container_name: smg_wordpress
     depends_on:
       - smg_db
+      - smg_redis
     image: wordpress:php8.1
     volumes:
       - ./data:/var/www/html/wp-content
@@ -35,6 +36,8 @@ services:
       WORDPRESS_TABLE_PREFIX: ${DB_PREFIX}
       WORDPRESS_CONFIG_EXTRA: |
         define('EM_GUTENBERG', true);
+        define( 'WP_REDIS_HOST', 'smg_redis' );
+        define( 'WP_REDIS_PORT', 6379 );
     labels:
       - traefik.enable=true
       - traefik.http.routers.smg.entrypoints=http
@@ -46,6 +49,15 @@ services:
       - traefik.http.routers.smg-secure.tls=true
       - traefik.http.routers.smg-secure.tls.certresolver=http
       - traefik.docker.network=proxy
+      
+  smg_redis:
+      container_name: smg_redis
+      image: redis:7
+      expose:
+          - 6379
+      restart: unless-stopped
+      networks:
+           - smg_backend
 
 networks:
   smg_backend:
