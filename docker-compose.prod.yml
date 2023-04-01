@@ -38,6 +38,7 @@ services:
         define('EM_GUTENBERG', true);
         define( 'WP_REDIS_HOST', 'smg_redis' );
         define( 'WP_REDIS_PORT', 6379 );
+        define( 'BLOCKS_EVERYWHERE_BBPRESS', true );
     labels:
       - traefik.enable=true
       - traefik.http.routers.smg.entrypoints=http
